@@ -1,0 +1,5 @@
+# ignore unencrypted files
+# config/*
+!config/*.gpg
+# allow specific unencrypted configs
+!config/requirements.txt
