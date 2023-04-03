@@ -3,3 +3,4 @@
 !config/*.gpg
 # allow specific unencrypted configs
 !config/requirements.txt
+.vagrant

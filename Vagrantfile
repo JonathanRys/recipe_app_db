@@ -13,8 +13,12 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "hashicorp/bionic64"
-  config.vm.provider :virtualbox do |vb|
-    vb.name = "recipe_app_es"
+  config.vm.define "recipe-app-es" do |app|
+    app.vm.hostname = "recipe-app-es"
+    app.vm.provider :virtualbox do |vb|
+      vb.name = "recipe-app-es"
+      vb.memory = 4096
+    end
   end
 
   # Disable automatic box update checking. If you disable this, then
@@ -26,12 +30,12 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 9200, host: 9200
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
-  config.vm.network "forwarded_port", guest: 9200, host: 9200, host_ip: "127.0.0.1"
+  # config.vm.network "forwarded_port", guest: 9200, host: 9200, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.

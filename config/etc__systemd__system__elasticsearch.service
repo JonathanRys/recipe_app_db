@@ -1,0 +1,20 @@
+[Unit]
+Description=Elasticsearch
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=elasticsearch
+Group=elasticsearch
+WorkingDirectory=/etc/elasticsearch/elasticsearch-7.17.1/bin
+Environment=ES_HOME=/etc/elasticsearch
+Environment=ES_JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ExecStart=/etc/elasticsearch/elasticsearch-7.17.1/bin/elasticsearch -p /tmp/elasticsearch-pid
+LimitMEMLOCK=infinity
+LimitNPROC=4096
+LimitNOFILE=65536
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
