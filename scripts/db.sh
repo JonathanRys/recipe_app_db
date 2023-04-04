@@ -27,6 +27,7 @@ mkdir elasticsearch
 cd elasticsearch
 mkdir jvm.options.d
 echo 'fetching...'
+# supress the output because it prints too many lines
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION-linux-x86_64.tar.gz &> /dev/null
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-$ES_VERSION-linux-x86_64.tar.gz.sha512
 shasum -a 512 -c elasticsearch-$ES_VERSION-linux-x86_64.tar.gz.sha512 
@@ -45,11 +46,9 @@ chown -R elasticsearch:elasticsearch $ES_HOME
 chmod o+x $ES_HOME/
 chgrp elasticsearch $ES_HOME/
 
-# install Kibana
-# echo '##### Install Kibana'
-
-# install LogStash
-# echo '##### Install LogStash'
+# @todo
+# build Kibana box
+# build LogStash box
 
 # install nginx
 echo '##### Install nginx'
@@ -65,7 +64,7 @@ for file in "${scripts[@]}"; do
     cp $VAGRANT_HOME/scripts/$file /root/scripts/
     chmod -R 700 /root/scripts/$file    
 done
-
+# copy configs
 /root/scripts/copy_configs.sh
 
 # clean up
@@ -73,10 +72,9 @@ echo '##### Clean up'
 rm $ES_HOME/elasticsearch-$ES_VERSION-linux-x86_64.tar.gz*
 
 # set up the firewall
-# ufw allow ssh
-# ufw allow http
-# ufw allow 9200 # ElasticSearch
-# ufw --force enable
+ufw allow http
+ufw allow 9200 # ElasticSearch
+ufw --force enable
 
 # start services
 systemctl enable elasticsearch
@@ -85,4 +83,6 @@ echo '##### Start services'
 systemctl start nginx
 systemctl start elasticsearch
 
+echo "Server build complete: $(date)"
+# reboot to apply updates and test failure recovery
 reboot
