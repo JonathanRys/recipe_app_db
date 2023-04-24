@@ -72,7 +72,7 @@ echo '##### Clean up'
 rm $ES_HOME/elasticsearch-$ES_VERSION-linux-x86_64.tar.gz*
 
 # set up the firewall
-ufw allow http
+ufw allow ssh
 ufw allow 9200 # ElasticSearch
 ufw --force enable
 
